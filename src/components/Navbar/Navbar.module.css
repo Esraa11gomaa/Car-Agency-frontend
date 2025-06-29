@@ -1,0 +1,18 @@
+.italianFont {
+  font-family: 'Dancing Script', cursive;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+  
+}
+
+.link:hover{
+  color:  #d1d5db;
+}
+
+.active{
+  text-decoration: underline 2px white;
+}
