@@ -13,6 +13,9 @@ import Register from './components/Register/Register';
 import Category from './components/Category/Category';
 import Cart from './components/Cart/Cart';
 import WishList from './components/WishList/WishList';
+import UserContextProvider from './Context/UserContext'
+import SignOut from './components/signOut/signOut';
+
 
 let Routing = createBrowserRouter([
   {
@@ -22,9 +25,10 @@ let Routing = createBrowserRouter([
       { path: "contact", element: <Contact /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+      { path: "signout", element: <SignOut /> },
       { path: "category", element: <Category /> },
       { path: "cart", element: <Cart /> },
-      {path:"wishlist", element:<WishList/>},
+      { path: "wishlist", element: <WishList /> },
       { path: "*", element: <Notfound /> }
     ]
   }
@@ -32,7 +36,9 @@ let Routing = createBrowserRouter([
 
 function App() {
 
-  return <RouterProvider router={Routing}></RouterProvider>
+  return <UserContextProvider>
+    <RouterProvider router={Routing}></RouterProvider>
+  </UserContextProvider>
 
 }
 

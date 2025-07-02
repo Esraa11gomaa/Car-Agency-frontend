@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import style from './Register.module.css'
+import { useContext, useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { UserContext } from '../../Context/UserContext'
 
 
 export default function Register() {
+let {userLogin, setuserLogin} = useContext(UserContext)
 
   const navigate = useNavigate()
 
@@ -23,14 +24,17 @@ export default function Register() {
       .then((res) => {
         setIsLoaded(false)
         if (res.data.message == "success") {
-          
+
           localStorage.setItem("userToken", res.data.token);
-          navigate("/")
+         setuserLogin(res.data.token)
+          navigate("/Login")
 
         }
       })
       .catch((res) => {
         setIsLoaded(false)
+        console.log(res.response.data.message);
+
         setApiError(res.response.data.message)
 
       })
@@ -46,7 +50,12 @@ export default function Register() {
 
     phone: Yup.string().matches(/^01[0125][0-9]{8}$/, "In-valid phone number").required("phone is required"),
 
-    password: Yup.string().matches(/^[A-Za-z0-9]{6,15}$/, "password should be bettween 6 and 15 character").required("password is required"),
+    password: Yup.string()
+      .matches(
+        /^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,50}$/,
+        "Password must be 6–50 characters and can include letters, numbers, and special characters"
+      )
+      .required("Password is required"),
 
     rePassword: Yup.string().oneOf([Yup.ref("password")], "rePassword and password not the same").required("rePassword is required")
 
@@ -72,7 +81,7 @@ export default function Register() {
 
     {ApiError ? <div className='w-1/2 mx-auto bg-red-500 text-white text-center font-bold rounded-lg p-3 mb-5'>{ApiError}</div> : null}
     <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto">
-      <h1 className='text-blue-800 text-3xl text-center font-normal mb-4'> Regester Form</h1>
+      <h1 className='text-blue-800 text-3xl text-center font-normal mb-4'> Register Form</h1>
 
       <div className="relative z-0 w-full mb-9 group">
         <input
